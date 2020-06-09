@@ -45,6 +45,8 @@ function make_name($str) {
 
 $selectedAdult = $_POST["adult"]?:1;
 $selectedChildren = $_POST["children"]?:0;
+$givenDate = $_POST['data-date']?:date('m-d-Y');
+$selectedDate = date("d/m/Y", strtotime($givenDate));
 ?>
 
 
@@ -53,6 +55,7 @@ $selectedChildren = $_POST["children"]?:0;
 <head>
 <title>Insurance Plans</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 <style>
 .sidebar-widget {
 	margin-top: 10px;
@@ -95,11 +98,11 @@ $selectedChildren = $_POST["children"]?:0;
 </select>
 </div>
 </div>
-<div class="form-group row">
-<label for="inputEmail" class="col-sm-5 col-form-label">Start Date</label>
-<div class="col-sm-7">
-<div class="input-group date" data-provide="datepicker">
-<input type="text" class="form-control" id="data-date">
+<div class="form-row">
+<div class="form-group col-md-12">
+<label for="inputCity">Start Date</label>
+<div class="input-group date mb-date" data-provide="datepicker">
+<input type="text" name="data-date" class="form-control" id="data-date">
 <div class="input-group-addon">
 <span class="fa fa-calendar"></span>
 </div>
@@ -117,6 +120,8 @@ $selectedChildren = $_POST["children"]?:0;
 </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
 function changeChildern(val) {
 	if(val==1) {
@@ -127,19 +132,27 @@ function changeChildern(val) {
 	}
 }
 (function() {
-	document.getElementById('adult').value = "<?php echo $selectedAdult;?>";
-	document.getElementById('children').value = "<?php echo $selectedChildren;?>";
-	if(<?php echo $selectedAdult ?>==1) {
+	document.getElementById('adult').value = "<?php echo $selectedAdult; ?>";
+	document.getElementById('children').value = "<?php echo $selectedChildren; ?>";
+	if(<?php echo $selectedAdult	 ?>==1) {
 		document.getElementById("children").value=0;
 		document.getElementById("children").disabled = true;
 	}
+	// alert( "<?php echo $_POST['data-date']; ?>");
+	//$('#data-date').datepicker({
+	//	format: 'dd-mm-yyyy',
+	//	defaultDate: "<?php echo $_POST['data-date']; ?>"
+	//});
+	
+	$('#data-date').datepicker("update", "<?php echo $givenDate; ?>");
 })();
+
 </script>
 </body>
 </html>
 
 <?php
-echo "Selected Values: Adult=".$selectedAdult." Children=".$selectedChildren."<br>";
+echo "Selected Values: Adult=".$selectedAdult." Children=".$selectedChildren." Date=".$selectedDate."<br>";
 echo "Australian Unity=".$plan_prices['australianunity']."<br>";
 echo "Medibank=".$plan_prices['medibank']."<br>";
 echo "Iman=".$plan_prices['iman']."<br>";
